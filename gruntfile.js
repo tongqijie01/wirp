@@ -38,6 +38,9 @@ module.exports = function(grunt){
 			options:{
 				jshintrc:'.jshintrc'
 			}
+		},
+		copy:{
+			js:{exports:true,cwd:"dist/js/",src:'*.min.js',dest:'sample/js/'}
 		}
 	});
 	// 告诉grunt需要使用插件
@@ -46,5 +49,5 @@ module.exports = function(grunt){
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	// 告诉grunt当我们输入grunt命令需要做些什么，有先后顺序
-	grunt.registerTask('default',['jshint','clean','uglify',]);
+	grunt.registerTask('default',['jshint','clean','uglify','copy']);
 }
