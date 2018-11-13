@@ -41,6 +41,15 @@ module.exports = function(grunt){
 		},
 		copy:{
 			js:{exports:true,cwd:"dist/js/",src:'*.min.js',dest:'sample/js/'}
+		},
+		replace:{
+			exports:{
+				src:['sample/js/index.html'],
+				overwrite:true,
+				replacements:[{
+					from:/.min.js/
+				}]
+			}
 		}
 	});
 	// 告诉grunt需要使用插件
@@ -48,6 +57,7 @@ module.exports = function(grunt){
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	// 告诉grunt当我们输入grunt命令需要做些什么，有先后顺序
 	grunt.registerTask('default',['jshint','clean','uglify','copy']);
 }
