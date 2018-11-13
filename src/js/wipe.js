@@ -1,13 +1,21 @@
 var cas = document.getElementById('cas');
 var context = cas.getContext("2d");
 var _w = cas.width,_h = cas.height,t = 0;
-var radius = 20;  //涂抹的半径
+var radius = 30;  //涂抹的半径
 var posX = 0;
 var posY = 0;
 var isMouseDown = false;  //表示鼠标的状态，是否按下，默认为未按下false，按下true
 
+// device保存设备类型，如果是移动端则为true,PC端为false
+var device = (/android|webos|iPhone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+console.log(navigator.userAgent);
+console.log(device);
+var clickEvtName = device ? "touchestart":"mousedown";
+var clickEvtName = device ? "touchestart":"mousemove";
+var clickEvtName = device ? "touchestart":"mouseup";
 // 画线
 function drawLine(context,x1,y1,x2,y2){
+	console.log("传递的实参个数:"+arguments.length);
 	context.save();
 	context.lineCap = "round";
 	context.lineWidth = radius*2;
@@ -25,6 +33,7 @@ function drawMask(context){
 }
 // 在画布上画半径为30的园
 function drawPoint(context,posX,posY){
+	console.log("传递的实参个数:"+arguments.length);
 	context.save();
 	context.beginPath();
 	context.arc(posX,posY,radius,0,2*Math.PI);
@@ -32,6 +41,7 @@ function drawPoint(context,posX,posY){
 	context.fill();
 	context.restore();
 }
+
 // 在canvas画布上监听自定义事件"mousedown"，调用drawPoint函数
 cas.addEventListener("mousedown",function(evt){
 	isMouseDown = true;
@@ -40,11 +50,21 @@ cas.addEventListener("mousedown",function(evt){
 	posX = event.clientX;
 	posY = event.clientY;
 	drawPoint(context,posX,posY);
+
 	// cas.addEventListener("mousemove",fn1,false);
 },false);
+
+cas.addEventListener("touchstart",function(evt){
+	isMouseDown = true;
+	var event = evt || window.event;
+	//获取手指在视口的坐标，传递参数到drawPoint
+	posX = event.touches[0].clientX;
+	posY = event.touches[0].clientY;
+	drawPoint(context,posX,posY);
+},false)
 // 增加监听"mousemove",调用drawPoint函数
-cas.addEventListener("mousemove",fn1,false);
-function fn1(evt){
+
+cas.addEventListener("mousemove",function(evt){
 	// 判断，当isMouseDown为true是，才能执行下面的操作
 	if (isMouseDown) {
 		var event = evt || window.event;
@@ -57,8 +77,27 @@ function fn1(evt){
 		posY = y2;
 	} else {
 		return false;
+	} 
+},false);
+
+// 手指移动
+cas.addEventListener("touchmove",function(evt){
+	// 判断，当isMouseDown为true是，才能执行下面的操作
+	if (!isMouseDown) {
+		return false;
+	} else {
+		var event = evt || window.event;
+		event.preventDefault();
+		var x2 = event.touches[0].clientX;
+		var y2 = event.touches[0].clientY;
+		// drawPoint(context,a,b);
+		drawLine(context,posX,posY,x2,y2);
+		// 每次的就是点变成下次划线的开始点
+		posX = x2;
+		posY = y2;
 	}
-}
+},false);
+
 cas.addEventListener("mouseup",function(){
 	// 还原isMouseDown 为false
 	isMouseDown = false;
