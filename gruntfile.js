@@ -44,11 +44,17 @@ module.exports = function(grunt){
 		},
 		replace:{
 			exports:{
-				src:['sample/js/index.html'],
+				src:['sample/index.html'],
 				overwrite:true,
 				replacements:[{
-					from:/.min.js/
-				}]
+					from:/\d[\.]\d[\.]\d/g,
+					to:'<%= pkg.version %>'
+				},
+				{
+					from:/hello\.css/g,
+					to:'hello.min.css'
+				}
+				]
 			}
 		}
 	});
@@ -58,6 +64,7 @@ module.exports = function(grunt){
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-text-replace');
 	// 告诉grunt当我们输入grunt命令需要做些什么，有先后顺序
-	grunt.registerTask('default',['jshint','clean','uglify','copy']);
+	grunt.registerTask('default',['jshint','clean','uglify','copy','replace']);
 }
