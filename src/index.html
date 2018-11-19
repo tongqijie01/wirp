@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<title>Document</title>
+
 	<style>
 		html,body{
 			width: 100%;
@@ -18,9 +23,34 @@
 	</style>
 </head>
 <body>
-	<canvas id="cas" width="280" height="500"></canvas>
+	<canvas id="cas" width="375" height="667"></canvas>
 </body>
 </html>
 <script src="js/wipe.js">
 
+</script>
+<script>
+
+var wipeConfig = {
+		id:"cas",
+		coverType:"images",  //取值类型为color、image
+		color:"",
+		imgUrl:"images/wipe2.jpg",  //前面的覆盖图
+		backImgUrl:"images/wipe1.jpg",  //背景图片
+		width:"375",  //canvas宽
+		height:"667",  //canvas高
+		radius:"20",  //涂抹笔的半径
+		transpercent:50,//透明面积占整个画布的百分比，超出此数字显示全部画布
+		callback: wipedCallback//用户自定义回调函数名称
+	}
+
+
+	var cas01 = new Wipe(wipeConfig);
+function wipedCallback(percent){
+	if(percent > 50){
+		console.log("透明面积超过50%,查看底图");
+
+	}
+	
+}
 </script>
