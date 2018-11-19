@@ -125,8 +125,8 @@ this.cas.addEventListener(moveEvtName,function(evt){
 	} else {
 		var event = evt || window.event;
 		event.preventDefault();
-		var x2 = this.device ? event.touches[0].clientX : event.clientX;
-		var y2 = this.device ? event.touches[0].clientY : event.clientY;
+		var x2 = that.device ? event.touches[0].clientX : event.clientX;
+		var y2 = that.device ? event.touches[0].clientY : event.clientY;
 		that.drawT(that.posX,that.posY,x2,y2);
 		// 每次的就是点变成下次划线的开始点
 		that.posX = x2;
